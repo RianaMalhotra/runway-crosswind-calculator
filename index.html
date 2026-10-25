@@ -195,6 +195,7 @@ const AIRPORTS={
 };
 let metarRequest=0;let latestMetar=null;let windMode='manual';
 function selectAirport(){
+ windMode='metar';
  const id=$('airport').value,options=AIRPORTS[id];
  $('runwayPick').replaceChildren(...options.map(name=>{const el=document.createElement('option');el.value=name;el.textContent='RWY '+name+' / '+String(Number(name.slice(0,2))*10%360).padStart(3,'0')+'°';return el}));
  const preferred=id==='CYYZ'?'05':options[0];$('runwayPick').value=preferred;selectRunway();fetchMetar();
@@ -244,7 +245,7 @@ function applyMetarWind(raw){
  $('useMetar').disabled=!parsed;
  if(!parsed){$('windSource').textContent='WIND: MANUAL / NO USABLE METAR WIND';return}
  if(parsed.variable){$('windSource').textContent='VARIABLE WIND · DIRECTION MANUAL';}
- if(windMode==='manual'&&!window.metarAutoInitialized){windMode='metar';window.metarAutoInitialized=true}
+ 
  if(windMode==='metar'){
   if(parsed.direction!==null)$('wind').value=parsed.direction;
   $('speed').max=Math.max(60,parsed.speed);
