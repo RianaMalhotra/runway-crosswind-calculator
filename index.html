@@ -102,6 +102,14 @@ html,body{background:#06101b;color:var(--text)}
 #weatherContent .weather-raw{margin-top:12px}
 #weatherContent .weather-cards strong{font-size:24px}
 @media(min-width:1100px){.analysis .display{grid-template-columns:minmax(0,1.5fr) minmax(300px,1fr)}}
+
+/* Keep station controls at the top, even when the decoded METAR expands */
+.airport-strip{align-items:start!important;grid-template-columns:minmax(180px,1fr) minmax(160px,.85fr) minmax(280px,1.8fr)}
+.airport-field{align-self:start;justify-content:flex-start}
+.airport-field label{margin:0 0 3px}
+.metar-panel{align-self:start}
+@media(max-width:1050px){.airport-strip{grid-template-columns:repeat(2,minmax(0,1fr))}.airport-strip .metar-panel{grid-column:1/-1}}
+@media(max-width:540px){.airport-strip{grid-template-columns:1fr}.airport-strip .metar-panel{grid-column:1}}
 </style>
 </head>
 <body>
