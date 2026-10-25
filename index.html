@@ -4,7 +4,7 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#0b111b">
 <meta name="description" content="An interactive Cessna-inspired runway crosswind trainer with wind vector visualization.">
-<title>RWY / Crosswind Trainer</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<title>RWY / Crosswind Trainer</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#080f19;--panel:#101b2c;--raised:#152238;--line:#2b3b54;--text:#e5edf7;--muted:#93a6c1;--cyan:#46d9f5;--amber:#ffb323;--green:#35d996;--red:#ff6a70;color-scheme:dark}
 *{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Inter,"Segoe UI",Arial,sans-serif;background:#070e17;color:var(--text)}button,input{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}.screen{min-height:100vh;animation:arrive .45s ease both}.screen[hidden]{display:none!important}@keyframes arrive{from{opacity:0}to{opacity:1}}
@@ -128,6 +128,11 @@ html,body{background:#06101b;color:var(--text)}
 .airport-photo-fallback{position:absolute;inset:0;z-index:0}
 .airport-photo img{position:relative;z-index:1}
 .airport-photo figcaption{z-index:2}
+
+/* Typography-only refresh — preserve original layout, colors, and functionality */
+html,body,button,input,select{font-family:"DM Sans",Arial,sans-serif}
+.topbar h1,.start,.readout label,.control-head,.status{font-family:"Space Grotesk","DM Sans",sans-serif!important;letter-spacing:-.015em}
+.cockpit-header,.cockpit-footer,.outside-label,.mfd small,.mfd-line,.top-meta,.panel-head,.control output,.readout .value,.sub,.gauge-caption,.bottom,.limit-row input,.vector-svg text,.airport-field label,.metar-title,.airport-field select,.metar-decoded,.airport-photo figcaption{font-family:"IBM Plex Mono",monospace!important}
 </style>
 </head>
 <body>
