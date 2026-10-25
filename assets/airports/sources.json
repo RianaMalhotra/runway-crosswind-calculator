@@ -1,0 +1,47 @@
+{
+  "CYYZ": {
+    "airport": "Toronto Pearson International Airport",
+    "source": "2073580",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/5/5c/Toronto_by_Sentinel-2_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled"
+  },
+  "CYTZ": {
+    "airport": "Billy Bishop Toronto City Airport",
+    "source": "301579",
+    "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2f/Billy_Bishop_Toronto_City_Airport_from_CN_Tower%2C_Toronto%2C_Ontario%2C_2026-06-28.jpg/1280px-Billy_Bishop_Toronto_City_Airport_from_CN_Tower%2C_Toronto%2C_Ontario%2C_2026-06-28.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  },
+  "CYHM": {
+    "airport": "John C. Munro Hamilton International Airport",
+    "source": "1662635",
+    "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d7/YHM_entrance_in_May_2019.jpg/1280px-YHM_entrance_in_May_2019.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  },
+  "CYOW": {
+    "airport": "Ottawa Macdonald–Cartier International Airport",
+    "source": "1649942",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/1/1b/Ottawa%2C_Canada_ESA24382932_%28cropped%29.jpeg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled"
+  },
+  "CYUL": {
+    "airport": "Montréal–Trudeau International Airport",
+    "source": "263611",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/8/85/ISS067-E-148114_-_View_of_Earth_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled"
+  },
+  "CYVR": {
+    "airport": "Vancouver International Airport",
+    "source": "177015",
+    "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6a/Vancouver_-_panoramio_%2830%29.jpg/1280px-Vancouver_-_panoramio_%2830%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  },
+  "KJFK": {
+    "airport": "John F. Kennedy International Airport",
+    "source": "97218",
+    "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b9/JFK_Aerial_Nov_14_2018.jpg/1280px-JFK_Aerial_Nov_14_2018.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+  },
+  "KLAX": {
+    "airport": "Los Angeles International Airport",
+    "source": "File:2021-10-05 16 42 53 Internal view of Los Angeles International Airport in Los Angeles, Los Angeles County, California.jpg",
+    "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/67/2021-10-05_16_42_53_Internal_view_of_Los_Angeles_International_Airport_in_Los_Angeles%2C_Los_Angeles_County%2C_California.jpg/1280px-2021-10-05_16_42_53_Internal_view_of_Los_Angeles_International_Airport_in_Los_Angeles%2C_Los_Angeles_County%2C_California.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+  },
+  "KORD": {
+    "airport": "O'Hare International Airport",
+    "source": "248449",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/c/c2/O%27Hare_International_Airport_%28Iss069e037725%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled"
+  }
+}
