@@ -14,6 +14,12 @@ A frontend-only, Cessna-inspired educational wind-component trainer deployed on 
 
 The vector diagram uses **runway-up orientation** (not north-up) so the component breakdown remains readable. Crosswind positive means wind from the right; negative means from the left. Negative headwind indicates tailwind.
 
+## Airport and METAR selector
+
+Choose one of nine airports and a runway to fill the **nominal runway heading** (runway number × 10°). The heading remains adjustable. Runway designators are presets, not verified current airport chart data; confirm active runways and published headings independently.
+
+The interface requests the selected airport's **raw METAR** from the AviationWeather.gov public API. METAR is displayed verbatim, not decoded. If the network, API, or browser cross-origin policy prevents retrieval, the UI reports METAR unavailable rather than supplying fabricated weather. The app does not automatically insert METAR wind into the calculator: METAR wind is generally true, while runway designators reflect magnetic heading, and these must not be mixed without conversion.
+
 ## Calculations
 
 With relative wind angle θ = wind-from direction − runway heading:
