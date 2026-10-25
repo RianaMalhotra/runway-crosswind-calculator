@@ -123,6 +123,11 @@ html,body{background:#06101b;color:var(--text)}
 .airport-strip .metar-panel{grid-column:3;grid-row:1/3;align-self:stretch}
 @media(max-width:1050px){.airport-strip{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:auto auto auto}.airport-photo{grid-column:1/-1;grid-row:2;height:240px}.airport-strip .metar-panel{grid-column:1/-1;grid-row:3}}
 @media(max-width:540px){.airport-strip{grid-template-columns:1fr}.airport-photo{grid-column:1;grid-row:3;height:210px}.airport-strip .metar-panel{grid-column:1;grid-row:4}}
+
+.airport-photo img{transition:opacity .25s ease}
+.airport-photo-fallback{position:absolute;inset:0;z-index:0}
+.airport-photo img{position:relative;z-index:1}
+.airport-photo figcaption{z-index:2}
 </style>
 </head>
 <body>
@@ -147,7 +152,7 @@ html,body{background:#06101b;color:var(--text)}
       <option value="KORD">KORD — Chicago O'Hare</option>
     </select></div>
     <div class="airport-field"><label for="runwayPick">RUNWAY / NOMINAL HEADING</label><select id="runwayPick" aria-label="Select runway"></select></div>
-    <figure class="airport-photo"><img id="airportPhoto" alt="Selected airport" loading="lazy"><div id="airportPhotoFallback" class="airport-photo-fallback" hidden>✈ AIRPORT IMAGE UNAVAILABLE</div><figcaption><span id="airportPhotoCaption">TORONTO PEARSON INTERNATIONAL AIRPORT</span><span>PHOTO · WIKIMEDIA</span></figcaption></figure>
+    <figure class="airport-photo"><img id="airportPhoto" alt="Selected airport" loading="eager"><div id="airportPhotoFallback" class="airport-photo-fallback" hidden>✈ AIRPORT IMAGE UNAVAILABLE</div><figcaption><span id="airportPhotoCaption">TORONTO PEARSON INTERNATIONAL AIRPORT</span><span>PHOTO · WIKIMEDIA</span></figcaption></figure>
     <div class="metar-panel"><div class="metar-title"><span>RAW METAR / <span id="metarIcao">CYYZ</span></span><button id="refreshMetar" type="button" aria-label="Refresh raw METAR">↻ REFRESH</button></div><code id="metarRaw" aria-live="polite">LOADING...</code><div id="metarState">Source: AviationWeather.gov · periodic snapshot</div><div class="metar-actions"><button id="useMetar" type="button">↗ USE METAR WINDS</button><button id="translateMetar" type="button" aria-expanded="false" aria-controls="metarDecoded">☰ TRANSLATE METAR</button><span id="windSource">WIND: MANUAL</span></div><div id="metarDecoded" class="metar-decoded" hidden></div></div>
   </div>
   <div class="controls">
@@ -253,20 +258,31 @@ async function loadAirportPhoto(id){
  const request=++airportPhotoRequest;
  const img=$('airportPhoto'),fallback=$('airportPhotoFallback');
  const name=AIRPORT_PAGES[id];
+ const KNOWN_IMAGES={
+  KLAX:'https://commons.wikimedia.org/wiki/Special:FilePath/Los_Angeles_International_Airport_by_Don_Ramey_Logan.jpg?width=1100',
+  CYYZ:'https://commons.wikimedia.org/wiki/Special:FilePath/Toronto_Pearson_International_Airport_Terminal_1_Toronto_July_2%2C_2026_202607022001_IMG_6294.jpg?width=1100'
+ };
  $('airportPhotoCaption').textContent=name.toUpperCase();
- img.hidden=true;img.removeAttribute('src');fallback.hidden=false;fallback.textContent='LOADING AIRPORT PHOTO...';
+ img.hidden=false;img.style.opacity='0';img.removeAttribute('src');fallback.hidden=false;fallback.textContent='LOADING AIRPORT PHOTO...';
+ const finishImage=(url)=>{
+  img.onload=()=>{if(request===airportPhotoRequest){img.style.opacity='1';fallback.hidden=true}};
+  img.onerror=()=>{if(request===airportPhotoRequest){img.style.opacity='0';fallback.hidden=false;fallback.textContent='AIRPORT PHOTO UNAVAILABLE'}};
+  img.alt='Photo of '+name;img.src=url;
+ };
+ if(KNOWN_IMAGES[id]){finishImage(KNOWN_IMAGES[id]);return}
  try{
   const params=new URLSearchParams({action:'query',prop:'pageimages',format:'json',pithumbsize:'1100',titles:name,origin:'*'});
-  const response=await fetch('https://en.wikipedia.org/w/api.php?'+params.toString());
+  const controller=new AbortController();
+  const timeout=setTimeout(()=>controller.abort(),7000);
+  let response;
+  try{response=await fetch('https://en.wikipedia.org/w/api.php?'+params.toString(),{signal:controller.signal})}
+  finally{clearTimeout(timeout)}
   if(!response.ok)throw new Error('Photo API unavailable');
   const data=await response.json();if(request!==airportPhotoRequest)return;
   const pages=Object.values(data.query?.pages||{});
   const url=pages[0]?.thumbnail?.source;
   if(!url||!url.startsWith('https://'))throw new Error('No image found');
-  img.onload=()=>{if(request===airportPhotoRequest){img.hidden=false;fallback.hidden=true}};
-  img.onerror=()=>{if(request===airportPhotoRequest){img.hidden=true;fallback.hidden=false;fallback.textContent='AIRPORT PHOTO UNAVAILABLE'}};
-  img.alt='Photo of '+name;
-  img.src=url;
+  finishImage(url);
  }catch(error){if(request===airportPhotoRequest){fallback.textContent='AIRPORT PHOTO UNAVAILABLE';fallback.hidden=false}}
 }
 function selectAirport(){
