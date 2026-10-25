@@ -281,25 +281,34 @@ function selectRunway(){
 }
 async function fetchMetar(){
  const id=$('airport').value,token=++metarRequest;
- $('metarIcao').textContent=id;latestMetar=null;renderWeather(null);
+ $('metarIcao').textContent=id;
  $('metarRaw').textContent='LOADING METAR...';
- $('metarState').textContent='Loading published observation snapshot';
+ $('metarState').textContent='Reading weather snapshot';
+ latestMetar=null;
+ try{renderWeather(null)}catch(e){console.warn('Weather summary render:',e)}
+ const controller=new AbortController();
+ const timeout=setTimeout(()=>controller.abort(),9000);
  try{
-  const response=await fetch('./metars.json?ts='+Date.now(),{cache:'no-store'});
+  const response=await fetch('./metars.json?ts='+Date.now(),{cache:'no-store',signal:controller.signal});
   if(!response.ok)throw new Error('HTTP '+response.status);
-  const data=await response.json();if(token!==metarRequest)return;
-  const raw=data?.reports?.[id];
-  if(typeof raw!=='string'||!raw.trim())throw new Error('No report for this airport');
+  const data=await response.json();
+  if(token!==metarRequest)return;
+  const raw=data&&data.reports&&data.reports[id];
+  if(typeof raw!=='string'||!raw.trim())throw new Error('No METAR for '+id);
+  latestMetar=raw;
+  $('metarRaw').textContent=raw;
   const age=data.updatedAt?(Date.now()-Date.parse(data.updatedAt))/60000:Infinity;
-  $('metarRaw').textContent=raw;latestMetar=raw;renderWeather(raw);applyMetarWind(raw);
   $('metarState').textContent=Number.isFinite(age)&&age>=0&&age<120
    ?'Raw METAR · snapshot '+Math.round(age)+' min old'
    :'Raw METAR · snapshot may be stale — verify independently';
+  try{renderWeather(raw)}catch(e){console.warn('METAR translation:',e)}
+  try{applyMetarWind(raw)}catch(e){console.warn('METAR wind application:',e)}
  }catch(error){
   if(token!==metarRequest)return;
-  latestMetar=null;renderWeather(null);$('metarRaw').textContent='METAR NOT YET AVAILABLE';
-  $('metarState').textContent='Scheduled feed pending · use refresh after update';
- }
+  $('metarRaw').textContent='METAR UNAVAILABLE';
+  $('metarState').textContent='Could not load weather snapshot · try REFRESH';
+  console.warn('METAR request failed:',error);
+ }finally{clearTimeout(timeout)}
 }
 $('airport').addEventListener('change',selectAirport);
 $('runwayPick').addEventListener('change',selectRunway);
