@@ -254,37 +254,21 @@ const AIRPORT_PAGES={
  KLAX:'Los Angeles International Airport',
  KORD:"O'Hare International Airport"
 };
-async function loadAirportPhoto(id){
- const request=++airportPhotoRequest;
+function loadAirportPhoto(id){
  const img=$('airportPhoto'),fallback=$('airportPhotoFallback');
- const name=AIRPORT_PAGES[id];
- const KNOWN_IMAGES={
-  KLAX:'https://commons.wikimedia.org/wiki/Special:FilePath/Los_Angeles_International_Airport_by_Don_Ramey_Logan.jpg?width=1100',
-  CYYZ:'https://commons.wikimedia.org/wiki/Special:FilePath/Toronto_Pearson_International_Airport_Terminal_1_Toronto_July_2%2C_2026_202607022001_IMG_6294.jpg?width=1100'
- };
+ const name=AIRPORT_PAGES[id]||id;
  $('airportPhotoCaption').textContent=name.toUpperCase();
- img.hidden=false;img.style.opacity='0';img.removeAttribute('src');fallback.hidden=false;fallback.textContent='LOADING AIRPORT PHOTO...';
- const finishImage=(url)=>{
-  img.onload=()=>{if(request===airportPhotoRequest){img.style.opacity='1';fallback.hidden=true}};
-  img.onerror=()=>{if(request===airportPhotoRequest){img.style.opacity='0';fallback.hidden=false;fallback.textContent='AIRPORT PHOTO UNAVAILABLE'}};
-  img.alt='Photo of '+name;img.src=url;
- };
- if(KNOWN_IMAGES[id]){finishImage(KNOWN_IMAGES[id]);return}
- try{
-  const params=new URLSearchParams({action:'query',prop:'pageimages',format:'json',pithumbsize:'1100',titles:name,origin:'*'});
-  const controller=new AbortController();
-  const timeout=setTimeout(()=>controller.abort(),7000);
-  let response;
-  try{response=await fetch('https://en.wikipedia.org/w/api.php?'+params.toString(),{signal:controller.signal})}
-  finally{clearTimeout(timeout)}
-  if(!response.ok)throw new Error('Photo API unavailable');
-  const data=await response.json();if(request!==airportPhotoRequest)return;
-  const pages=Object.values(data.query?.pages||{});
-  const url=pages[0]?.thumbnail?.source;
-  if(!url||!url.startsWith('https://'))throw new Error('No image found');
-  finishImage(url);
- }catch(error){if(request===airportPhotoRequest){fallback.textContent='AIRPORT PHOTO UNAVAILABLE';fallback.hidden=false}}
+ fallback.hidden=false;
+ fallback.textContent='AIRPORT PHOTO NOT YET INSTALLED';
+ img.style.opacity='0';
+ img.onload=()=>{img.style.opacity='1';fallback.hidden=true};
+ img.onerror=()=>{img.style.opacity='0';fallback.hidden=false;fallback.textContent='AIRPORT PHOTO UNAVAILABLE'};
+ img.alt='Photo of '+name;
+ // These files are stored in this GitHub repository and served by GitHub Pages.
+ // No live Wikimedia or Wikipedia API requests are required from the browser.
+ img.src='./assets/airports/'+id+'.jpg';
 }
+
 function selectAirport(){
  windMode='metar';
  const id=$('airport').value,options=AIRPORTS[id];
