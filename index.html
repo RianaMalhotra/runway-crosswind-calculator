@@ -31,11 +31,11 @@
    <div class="control"><div class="control-head"><label for="gust">Gust speed</label><output id="gustOut">18 kt</output></div><input id="gust" type="range" min="0" max="80" step="1" value="18"></div>
   </div>
   <div class="display">
-   <div class="vector-panel"><div class="panel-head"><span>WIND VECTOR / NORTH UP</span><span id="vectorHeading">RWY 36 · 040° / 12 KT</span></div>
-    <svg class="vector-svg" viewBox="0 0 620 400" role="img" aria-label="Top-down runway, incoming wind vector, headwind and crosswind components">
+   <div class="vector-panel"><div class="panel-head"><span>WIND VECTOR / RUNWAY UP</span><span id="vectorHeading">RWY 36 · 040° / 12 KT</span></div>
+    <svg class="vector-svg" viewBox="0 0 620 400" role="img" aria-label="Runway-up schematic showing incoming wind and its headwind and crosswind components">
       <defs><marker id="windTip" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#e5edf7"/></marker><marker id="crossTip" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#ffb323"/></marker><marker id="headTip" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#46d9f5"/></marker></defs>
-      <g id="runwayGraphic" class="runway-rot"><rect x="270" y="24" width="60" height="352" fill="#202f48" stroke="#4c607e" stroke-width="2"/><path d="M300 45V350" stroke="#c1cde1" stroke-width="3" stroke-dasharray="23 16"/><text id="rwyTop" x="300" y="76" text-anchor="middle" fill="#eef5ff" font-size="22">36</text><text id="rwyBottom" x="300" y="347" text-anchor="middle" fill="#eef5ff" font-size="22" transform="rotate(180 300 340)">18</text></g>
-      <g id="vectorGroup"><line id="windLine" x1="410" y1="80" x2="300" y2="200" stroke="#e5edf7" stroke-width="4" marker-end="url(#windTip)"/><line id="headLine" x1="410" y1="80" x2="410" y2="200" stroke="#46d9f5" stroke-width="3" stroke-dasharray="7 7" marker-end="url(#headTip)"/><line id="crossLine" x1="410" y1="200" x2="300" y2="200" stroke="#ffb323" stroke-width="3" stroke-dasharray="7 7" marker-end="url(#crossTip)"/><path id="angleArc" d="" fill="none" stroke="#93a6c1" stroke-width="2"/><text id="angleText" x="330" y="160" fill="#a8bad1" font-size="17">40°</text><text id="headText" x="420" y="150" fill="#46d9f5" font-size="15">Headwind</text><text id="crossText" x="365" y="226" fill="#ffb323" font-size="15">Crosswind</text><text id="windText" x="415" y="65" fill="#e5edf7" font-size="15">040° / 12 kt</text></g>
+      <g id="runwayGraphic" transform="translate(-130 0)"><rect x="270" y="24" width="60" height="352" fill="#202f48" stroke="#4c607e" stroke-width="2"/><path d="M300 45V350" stroke="#c1cde1" stroke-width="3" stroke-dasharray="23 16"/><text id="rwyTop" x="300" y="76" text-anchor="middle" fill="#eef5ff" font-size="22">36</text><text id="rwyBottom" x="300" y="347" text-anchor="middle" fill="#eef5ff" font-size="22" transform="rotate(180 300 340)">18</text></g>
+      <g id="vectorGroup"><line id="windLine" x1="500" y1="110" x2="440" y2="215" stroke="#e5edf7" stroke-width="4" marker-end="url(#windTip)"/><line id="headLine" x1="500" y1="110" x2="500" y2="215" stroke="#46d9f5" stroke-width="3" stroke-dasharray="7 7" marker-end="url(#headTip)"/><line id="crossLine" x1="500" y1="215" x2="440" y2="215" stroke="#ffb323" stroke-width="3" stroke-dasharray="7 7" marker-end="url(#crossTip)"/><path id="angleArc" d="" fill="none" stroke="#93a6c1" stroke-width="2"/><text id="angleText" x="350" y="95" fill="#a8bad1" font-size="17">40°</text><text id="headText" x="350" y="315" fill="#46d9f5" font-size="15">Headwind</text><text id="crossText" x="350" y="338" fill="#ffb323" font-size="15">Crosswind</text><text id="windText" x="350" y="58" fill="#e5edf7" font-size="15">040° / 12 kt</text></g>
     </svg>
    </div>
    <div class="readouts">
@@ -44,10 +44,11 @@
     <div class="limit-panel"><div class="limit-row"><label for="limit">Reference crosswind threshold (kt)</label><input id="limit" type="number" min="1" max="100" value="15" aria-label="Editable reference crosswind threshold"></div><div class="track"><div id="marker" class="marker"></div></div><div id="status" class="status good" aria-live="polite">WITHIN REFERENCE THRESHOLD</div><div class="gauge-row"><div class="gauge"><svg viewBox="0 0 130 130" aria-label="Semicircular crosswind gauge"><path d="M15 65A50 50 0 0 1 115 65" fill="none" stroke="#29473f" stroke-width="12"/><path d="M85 25A50 50 0 0 1 110 44" fill="none" stroke="#9b742d" stroke-width="12"/><path d="M110 44A50 50 0 0 1 115 65" fill="none" stroke="#a34850" stroke-width="12"/><g id="needle" class="gauge-needle"><line x1="65" y1="65" x2="65" y2="20" stroke="#eaf3ff" stroke-width="3"/><circle cx="65" cy="65" r="5" fill="#eaf3ff"/></g></svg></div><div class="gauge-caption">STEADY CROSSWIND<br><strong id="percent">51%</strong> OF THRESHOLD<br><span id="gustStatus">GUST: 77%</span></div></div></div>
    </div>
   </div>
-  <div class="bottom"><span><span class="small-icon">◉</span> Wind components: crosswind = V × sin(θ) · headwind = V × cos(θ)</span><span>θ = WIND FROM − RUNWAY HEADING</span></div>
+  <div class="bottom"><span><span class="small-icon">◉</span> Wind components: crosswind = V × sin(θ) · headwind = V × cos(θ)</span><span>RUNWAY-UP SCHEMATIC · θ = WIND FROM − RUNWAY HEADING</span></div>
  </main>
  <p id="error" class="error" role="alert"></p><p class="disclaimer">Training visualization only — not for flight planning or go/no-go decisions. The 15 kt default is a user-adjustable reference, not a certified C172 operating limit. Consult the specific aircraft POH, conditions, and instructor. Use wind direction and runway heading in the same true/magnetic reference.</p>
 </section>
+<script src="wind-math.js"></script>
 <script>
 const $=id=>document.getElementById(id);
 const pad=n=>String(Math.round(n)).padStart(3,'0');
@@ -56,10 +57,10 @@ function show(id){$('cockpit').hidden=id!=='cockpit';$('analysis').hidden=id!=='
 $('start').addEventListener('click',()=>show('analysis'));$('back').addEventListener('click',()=>show('cockpit'));
 function update(){
  const r=+$('runway').value,w=+$('wind').value,v=+$('speed').value,g=+$('gust').value,limit=+$('limit').value;
- const valid=Number.isFinite(limit)&&limit>0&&limit<=100;
- $('error').textContent=valid?'':'Enter a reference threshold between 1 and 100 kt.';
+ const valid=Number.isFinite(limit)&&limit>0&&limit<=100&&g>=v;
+ $('error').textContent=valid?'':'Use a threshold of 1–100 kt and a gust speed at least as high as sustained wind.';
  if(!valid)return;
- const theta=(w-r)*Math.PI/180,head=v*Math.cos(theta),cross=v*Math.sin(theta),gh=g*Math.cos(theta),gc=g*Math.sin(theta);
+ const {head,cross,gh,gc}=WindMath.calculate(r,w,v,g);
  const h=Math.abs(head)<1e-9?0:head,c=Math.abs(cross)<1e-9?0:cross;
  const side=c===0?'No crosswind':c>0?'From the right':'From the left';
  const htype=h<0?'Tailwind':'Headwind';
@@ -67,7 +68,7 @@ function update(){
  $('runwayOut').textContent=pad(r)+'°';$('windOut').textContent=pad(w)+'°';$('speedOut').textContent=v+' kt';$('gustOut').textContent=g+' kt';
  $('vectorHeading').textContent='RWY '+rwynum(r)+' · '+pad(w)+'° / '+v+' KT';
  $('rwyTop').textContent=rwynum(r);$('rwyBottom').textContent=rwynum((r+180)%360);
- $('runwayGraphic').style.transform='rotate('+r+'deg)';
+ // Runway remains vertical: the entire vector schematic uses runway-up coordinates.
  $('crossValue').textContent=fmt(c);$('headValue').textContent=fmt(h);$('headLabel').textContent=htype;
  $('crossSide').textContent=side+' · gust '+fmt(gc)+' kt';
  $('headGust').textContent='Gust '+(gh<0?'tailwind':'headwind')+' component '+fmt(gh)+' kt';
@@ -81,16 +82,16 @@ function update(){
  // Render vectors in runway-relative coordinates, with the runway fixed vertical for legibility.
  // Wind FROM vector begins upwind of the origin, then points towards the runway.
  const delta=((w-r+540)%360)-180,rad=delta*Math.PI/180;
- const ox=300,oy=210,len=150,dx=len*Math.sin(rad),dy=len*Math.cos(rad),sx=ox+dx,sy=oy-dy;
+ const ox=440,oy=215,len=105,dx=len*Math.sin(rad),dy=len*Math.cos(rad),sx=ox+dx,sy=oy-dy;
  function line(id,x1,y1,x2,y2){const el=$(id);for(const [k,val] of Object.entries({x1,y1,x2,y2}))el.setAttribute(k,val)}
  line('windLine',sx,sy,ox,oy);line('headLine',sx,sy,sx,oy);line('crossLine',sx,oy,ox,oy);
- $('windText').setAttribute('x',Math.max(20,Math.min(505,sx-40)));$('windText').setAttribute('y',Math.max(20,sy-13));$('windText').textContent=pad(w)+'° at '+v+' kt';
- $('headText').setAttribute('x',Math.min(540,sx+10));$('headText').setAttribute('y',(sy+oy)/2);$('headText').textContent=htype;
- $('crossText').setAttribute('x',(sx+ox)/2-32);$('crossText').setAttribute('y',oy+28);$('crossText').textContent='Crosswind';
- const arcR=52,arcEnd=-Math.PI/2+rad;
+ $('windText').setAttribute('x',350);$('windText').setAttribute('y',58);$('windText').textContent=pad(w)+'° at '+v+' kt';
+ $('headText').setAttribute('x',350);$('headText').setAttribute('y',315);$('headText').textContent=htype;
+ $('crossText').setAttribute('x',350);$('crossText').setAttribute('y',338);$('crossText').textContent='Crosswind';
+ const arcR=30,arcEnd=-Math.PI/2+rad;
  const ex=ox+arcR*Math.cos(arcEnd),ey=oy+arcR*Math.sin(arcEnd);
  $('angleArc').setAttribute('d','M '+ox+' '+(oy-arcR)+' A '+arcR+' '+arcR+' 0 0 '+(delta>=0?1:0)+' '+ex+' '+ey);
- $('angleText').setAttribute('x',ox+(delta>=0?20:-70));$('angleText').setAttribute('y',oy-65);
+ $('angleText').setAttribute('x',350);$('angleText').setAttribute('y',95);
  $('angleText').textContent=Math.abs(delta)+'°';
 }
 ['runway','wind','speed','gust','limit'].forEach(id=>$(id).addEventListener('input',update));
