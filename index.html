@@ -65,7 +65,7 @@ button,input,select{font-family:"IBM Plex Sans",Arial,sans-serif}
       <option value="KORD">KORD — Chicago O'Hare</option>
     </select></div>
     <div class="airport-field"><label for="runwayPick">RUNWAY / NOMINAL HEADING</label><select id="runwayPick" aria-label="Select runway"></select></div>
-    <div class="metar-panel"><div class="metar-title"><span>RAW METAR / <span id="metarIcao">CYYZ</span></span><button id="refreshMetar" type="button" aria-label="Refresh raw METAR">↻ REFRESH</button></div><code id="metarRaw" aria-live="polite">LOADING...</code><div id="metarState">Source: AviationWeather.gov · observed weather</div></div>
+    <div class="metar-panel"><div class="metar-title"><span>RAW METAR / <span id="metarIcao">CYYZ</span></span><button id="refreshMetar" type="button" aria-label="Refresh raw METAR">↻ REFRESH</button></div><code id="metarRaw" aria-live="polite">LOADING...</code><div id="metarState">Source: AviationWeather.gov · periodic snapshot</div></div>
   </div>
   <div class="controls">
    <div class="control"><div class="control-head"><label for="runway">Runway heading</label><output id="runwayOut">360°</output></div><input id="runway" type="range" min="0" max="360" step="1" value="360"></div>
@@ -161,16 +161,25 @@ function selectRunway(){
 }
 async function fetchMetar(){
  const id=$('airport').value,token=++metarRequest;
- $('metarIcao').textContent=id;$('metarRaw').textContent='REQUESTING METAR...';$('metarState').textContent='Fetching raw observation · AviationWeather.gov';
+ $('metarIcao').textContent=id;
+ $('metarRaw').textContent='LOADING METAR...';
+ $('metarState').textContent='Loading published observation snapshot';
  try{
-  const response=await fetch('https://aviationweather.gov/api/data/metar?ids='+encodeURIComponent(id)+'&format=json',{headers:{Accept:'application/json'},cache:'no-store'});
+  const response=await fetch('./metars.json?ts='+Date.now(),{cache:'no-store'});
   if(!response.ok)throw new Error('HTTP '+response.status);
   const data=await response.json();if(token!==metarRequest)return;
-  const record=Array.isArray(data)?data.find(x=>x.icaoId===id)||data[0]:null;
-  if(!record||typeof record.rawOb!=='string'||!record.rawOb.trim())throw new Error('No observation available');
-  $('metarRaw').textContent=record.rawOb;
-  $('metarState').textContent='Raw METAR · live fetch · '+new Date().toLocaleTimeString();
- }catch(error){if(token!==metarRequest)return;$('metarRaw').textContent='METAR UNAVAILABLE';$('metarState').textContent='Unable to retrieve observation · try refresh';}
+  const raw=data?.reports?.[id];
+  if(typeof raw!=='string'||!raw.trim())throw new Error('No report for this airport');
+  const age=data.updatedAt?(Date.now()-Date.parse(data.updatedAt))/60000:Infinity;
+  $('metarRaw').textContent=raw;
+  $('metarState').textContent=Number.isFinite(age)&&age>=0&&age<120
+   ?'Raw METAR · snapshot '+Math.round(age)+' min old'
+   :'Raw METAR · snapshot may be stale — verify independently';
+ }catch(error){
+  if(token!==metarRequest)return;
+  $('metarRaw').textContent='METAR NOT YET AVAILABLE';
+  $('metarState').textContent='Scheduled feed pending · use refresh after update';
+ }
 }
 $('airport').addEventListener('change',selectAirport);
 $('runwayPick').addEventListener('change',selectRunway);
