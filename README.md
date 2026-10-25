@@ -1,33 +1,46 @@
-# Runway Crosswind Calculator
+# Runway Crosswind Trainer
 
-A responsive, frontend-only aviation tool that calculates headwind, tailwind, and left/right crosswind components from runway heading and wind direction/speed.
+A frontend-only, Cessna-inspired educational wind-component trainer deployed on GitHub Pages.
 
-## Live website
+**Live website:** https://rianamalhotra.github.io/runway-crosswind-calculator/
 
-https://rianamalhotra.github.io/runway-crosswind-calculator/ 
+## Experience
 
-## Features
+1. Start in a simplified cockpit taxi scene with an animated windsock.
+2. Select **Analyze crosswind** to open the instrument display.
+3. Adjust runway heading, wind-from direction, sustained wind and gust speed.
+4. Review crosswind/headwind/tailwind components, vector decomposition and a configurable reference threshold.
+5. Select **Cockpit** to return to the taxi view.
 
-- Instant wind component calculations
-- Interactive runway and wind visualization
-- Input validation and mobile-friendly layout
-- No dependencies, server, or API required
+The vector diagram uses **runway-up orientation** (not north-up) so the component breakdown remains readable. Crosswind positive means wind from the right; negative means from the left. Negative headwind indicates tailwind.
+
+## Calculations
+
+With relative wind angle θ = wind-from direction − runway heading:
+
+- Headwind = wind speed × cos(θ)
+- Crosswind = wind speed × sin(θ)
+
+The same calculations are applied to gust speed. The interface requires gust speed to be at least sustained wind speed.
 
 ## Run locally
 
-Open `index.html` in any modern browser.
+Open `index.html` in a modern browser. No installation or backend is required.
 
-## Formula
+## Automated tests
 
-With wind speed `V` and relative angle `θ = wind direction - runway heading`:
+Requires Node.js 18+:
 
-- Headwind component: `V × cos(θ)` (negative means tailwind)
-- Crosswind component: `V × sin(θ)` (positive means wind from right)
+```bash
+node --test tests/*.test.js
+```
 
-For runway heading 270°, wind from 300° at 20 kt: headwind ≈ 17.3 kt, crosswind ≈ 10.0 kt from right.
+Tests cover direct headwind, tailwind, left/right crosswind, 30-degree decomposition, gusts, wraparound headings, zero wind and invalid inputs. GitHub Actions runs the tests on pushes to `main` and pull requests.
 
-## Deployment
+## Deploy
 
-GitHub repository **Settings → Pages → Build and deployment → Deploy from a branch → main → /(root) → Save**.
+GitHub Pages → **Deploy from a branch** → `main` → `/(root)`. Commits to main automatically redeploy the site.
 
-> Educational demonstration only. Not for operational flight planning. Runway heading and wind direction must use the same magnetic/true reference. Runway numbers are rounded and are not precise published headings.
+## Safety and scope
+
+**For education only; not for operational flight planning or go/no-go decisions.** The default 15 kt threshold is a user-adjustable comparison value, not a certified Cessna 172 operating limit. Actual aircraft guidance varies by model and conditions. Use runway heading and wind direction in the same magnetic or true reference. Runway numbers are rounded and do not necessarily equal the precise published runway heading.
