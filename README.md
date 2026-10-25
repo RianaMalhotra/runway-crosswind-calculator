@@ -18,7 +18,7 @@ The vector diagram uses **runway-up orientation** (not north-up) so the componen
 
 Choose one of nine airports and a runway to fill the **nominal runway heading** (runway number × 10°). The heading remains adjustable. Runway designators are presets, not verified current airport chart data; confirm active runways and published headings independently.
 
-The interface requests the selected airport's **raw METAR** from the AviationWeather.gov public API. METAR is displayed verbatim, not decoded. If the network, API, or browser cross-origin policy prevents retrieval, the UI reports METAR unavailable rather than supplying fabricated weather. The app does not automatically insert METAR wind into the calculator: METAR wind is generally true, while runway designators reflect magnetic heading, and these must not be mixed without conversion.
+A scheduled GitHub Actions workflow fetches raw METARs from AviationWeather.gov server-side and commits a small `metars.json` snapshot approximately every 30 minutes. The static website reads that same-origin JSON file (avoiding the API's browser CORS restriction). Reports are shown verbatim, with snapshot age or a stale warning. Missing data is never fabricated. To populate the feed immediately, run **Actions → Update raw METAR snapshot → Run workflow**. GitHub Actions must have permission to write repository contents (Settings → Actions → General → Workflow permissions → Read and write permissions). The app does not automatically insert METAR wind into the calculator: METAR wind is generally true, while runway designators reflect magnetic heading, and these must not be mixed without conversion.
 
 ## Calculations
 
