@@ -4,7 +4,7 @@ A responsive, frontend-only aviation tool that calculates headwind, tailwind, an
 
 ## Live website
 
-https://rianamalhotra.github.io/runway-crosswind-calculator/ (available after GitHub Pages is enabled)
+https://rianamalhotra.github.io/runway-crosswind-calculator/ 
 
 ## Features
 
