@@ -1,0 +1,29 @@
+name: Download airport photographs
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - scripts/download_airport_photos.py
+      - .github/workflows/airport-photos.yml
+permissions:
+  contents: write
+jobs:
+  download:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Download and validate airport photos
+        run: python scripts/download_airport_photos.py
+      - name: Commit local photo assets
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/airports/
+          if ! git diff --cached --quiet; then
+            git commit -m "Add locally hosted airport photos"
+            git push
+          fi
