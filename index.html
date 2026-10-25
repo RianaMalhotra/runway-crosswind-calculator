@@ -233,8 +233,8 @@ $('runway').addEventListener('input',()=>{$('runwayPick').value='';});
 function parseMetarWind(raw){
  if(typeof raw!=='string')return null;
  // Only the initial METAR wind group; never confuse wind groups in remarks.
- const core=raw.split(/\\sRMK\\s/)[0];
- const match=core.match(/(?:^|\\s)(\\d{3}|VRB)(\\d{2,3})(?:G(\\d{2,3}))?KT(?=\\s|$)/);
+ const core=raw.split(/\sRMK\s/)[0];
+ const match=core.match(/(?:^|\s)(\d{3}|VRB)(\d{2,3})(?:G(\d{2,3}))?KT(?=\s|$)/);
  if(!match)return null;
  const speed=Number(match[2]),gust=match[3]?Number(match[3]):speed;
  return {direction:match[1]==='VRB'?null:Number(match[1]),speed,gust,variable:match[1]==='VRB'};
