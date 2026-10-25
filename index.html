@@ -41,6 +41,46 @@ button,input,select{font-family:"IBM Plex Sans",Arial,sans-serif}
 #metarState{font:11px "IBM Plex Mono",monospace;color:#9fb3b0}
 @media(max-width:850px){.airport-strip{grid-template-columns:1fr 1fr}.metar-panel{grid-column:1/-1}}
 @media(max-width:480px){.airport-strip{grid-template-columns:1fr}.metar-panel{grid-column:auto}}
+
+/* Cinematic flight-deck treatment inspired by the portfolio mockup */
+:root{--bg:#06101b;--panel:#081827;--raised:#0b2133;--line:#1b4764;--text:#edf5ff;--muted:#91acc1;--cyan:#55d5ff;--amber:#ffb247;--green:#52d79a;--red:#ff6578}
+html,body{background:#06101b;color:var(--text)}
+.analysis{max-width:1800px;padding:18px 24px 28px;background:radial-gradient(ellipse at 8% 12%,#19354c 0%,#07121f 48%,#050c15 100%)}
+.topbar h1{font-size:clamp(22px,2.2vw,34px);color:#f6f9fc;font-weight:700;letter-spacing:.045em}
+.topbar h1 em{color:#66d8ff;font-style:normal}
+.flight-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;background:#07111d;border:1px solid #193f5b;padding:8px;border-radius:12px;margin-bottom:14px}
+.flight-tab{min-height:48px;background:transparent;color:#8ba8bd;border:1px solid transparent;border-radius:7px;font:600 14px "Barlow Condensed",sans-serif;letter-spacing:.11em}
+.flight-tab:hover{color:#fff;background:#11293c}
+.flight-tab.active{color:#65d9ff;border-color:#2f9bcc;background:linear-gradient(180deg,#103a57,#0a2135);box-shadow:inset 0 0 12px #136a9833,0 0 15px #0f7eb026}
+.console{background:linear-gradient(145deg,#0a1a2a,#07121f);border:1px solid #214966;box-shadow:0 18px 55px #0008;border-radius:12px}
+.airport-strip{background:#091b2a;border-color:#24516e;grid-template-columns:minmax(180px,1fr) minmax(160px,.8fr) minmax(260px,1.8fr)}
+.airport-field select,.metar-panel,.control input[type=number]{background:#061420;border-color:#315b77;color:#f1f6fb}
+.metar-title,#metarRaw{color:#b8d9ed}
+#metarRaw{color:#e9f3ff}
+.metar-actions{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:10px;flex-wrap:wrap}
+#useMetar{background:#0d3149;border:1px solid #2b93c3;color:#7bdeff;border-radius:5px;padding:8px 12px;font:600 12px "IBM Plex Mono",monospace}
+#useMetar:disabled{opacity:.5;cursor:not-allowed}
+#windSource{color:#94adbe;font:11px "IBM Plex Mono",monospace}
+.vector-panel,.readout,.limit-panel{background:linear-gradient(145deg,#0a1b2b,#071521);border-color:#22506d}
+.vector-panel{background-image:linear-gradient(145deg,#0a1b2bdf,#071521f5),repeating-linear-gradient(90deg,transparent 0 29px,#23608318 30px 31px)}
+.readout .value{font-family:"Barlow Condensed",sans-serif!important;font-size:clamp(44px,4.3vw,66px);font-weight:600}
+.readout label,.control-head,.panel-head,.limit-row,.weather-heading{color:#a9c9dd}
+.amber{color:#ffb247}.cyan{color:#5bd9ff}
+.tab-content{min-height:430px}
+.tab-content[hidden],#calculatorContent[hidden]{display:none!important}
+.visualizer-intro,.weather-heading{display:flex;justify-content:space-between;gap:12px;align-items:center;margin:8px 0 20px;font:13px "IBM Plex Mono",monospace}
+.visualizer-intro strong,.weather-heading strong{font:700 25px "Barlow Condensed",sans-serif;color:#6cdbff;letter-spacing:.08em}
+#visualizerMount .vector-panel{max-width:900px;margin:auto;min-height:490px}
+#visualizerMount .vector-svg{height:440px}
+.weather-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.weather-cards article{border:1px solid #265371;background:#0a2031;padding:24px 18px;border-radius:8px;display:flex;flex-direction:column;gap:12px}
+.weather-cards label,.weather-raw label{color:#9ebed1;font:12px "IBM Plex Mono",monospace}
+.weather-cards strong{color:#6edcff;font:600 30px "Barlow Condensed",sans-serif}
+.weather-raw{border:1px solid #265371;background:#071622;border-radius:8px;margin-top:16px;padding:20px;display:flex;flex-direction:column;gap:14px}
+.weather-raw code{font:14px/1.8 "IBM Plex Mono",monospace;color:#e8f1f8;overflow-wrap:anywhere}
+.instrument-note{color:#9bb1c4;font:12px/1.8 "IBM Plex Mono",monospace;margin-top:17px}
+@media(min-width:1250px){body:has(#analysis:not([hidden])) #cockpit{display:flex!important;position:fixed;top:0;left:0;width:43%;height:100vh;min-height:0;z-index:0}body:has(#analysis:not([hidden])) #analysis{display:block!important;width:57%;margin:0 0 0 43%;position:relative;z-index:1;min-height:100vh}body:has(#analysis:not([hidden])) #cockpit .dash{min-height:240px}body:has(#analysis:not([hidden])) #cockpit #start{display:none}body:has(#analysis:not([hidden])) #analysis .display{grid-template-columns:1fr}body:has(#analysis:not([hidden])) #analysis .airport-strip{grid-template-columns:1fr 1fr}body:has(#analysis:not([hidden])) #analysis .metar-panel{grid-column:1/-1}body:has(#analysis:not([hidden])) #analysis .controls{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:700px){.flight-tab{font-size:11px;letter-spacing:0}.weather-cards{grid-template-columns:repeat(2,1fr)}.visualizer-intro,.weather-heading{flex-direction:column;align-items:flex-start}}
 </style>
 </head>
 <body>
@@ -50,7 +90,8 @@ button,input,select{font-family:"IBM Plex Sans",Arial,sans-serif}
  <div class="dash"><div class="dash-grid"><div class="dial-group"><div class="dial" style="--needle:42deg"><span>AIRSPEED</span></div><div class="dial" style="--needle:-18deg"><span>ATTITUDE</span></div><div class="dial" style="--needle:100deg"><span>ALT</span></div></div><div class="mfd"><small>RWY WIND COMPUTER / STANDBY</small><div class="mfd-line">WX · 040° / 12 KT</div><button id="start" class="start">ANALYZE CROSSWIND →</button></div><div class="dial-group"><div class="dial" style="--needle:78deg"><span>HEADING</span></div><div class="dial" style="--needle:0deg"><span>VSI</span></div><div class="dial" style="--needle:-45deg"><span>TURN</span></div></div></div><div class="cockpit-footer"><span>FLIGHT TRAINING VISUALIZATION</span><span>NOT AN ACTUAL AIRCRAFT INSTRUMENT</span></div></div>
 </section>
 <section id="analysis" class="screen analysis" hidden aria-label="Crosswind analysis instrument">
- <header class="topbar"><button id="back" class="back">← COCKPIT</button><h1>Crosswind analysis</h1><span class="top-meta">C172 · WIND COMPUTER</span></header>
+ <header class="topbar"><button id="back" class="back">← COCKPIT</button><h1>RUNWAY <em>CROSSWIND</em> CALCULATOR</h1><span class="top-meta">FLIGHT WEATHER / TRAINING SUITE</span></header>
+ <nav class="flight-tabs" aria-label="Instrument views"><button class="flight-tab active" type="button" data-view="calculator">✈ CROSSWIND CALCULATOR</button><button class="flight-tab" type="button" data-view="visualizer">▥ RUNWAY VISUALIZER</button><button class="flight-tab" type="button" data-view="weather">☁ METAR & WEATHER</button></nav>
  <main class="console">
   <div class="airport-strip">
     <div class="airport-field"><label for="airport">AIRPORT / ICAO</label><select id="airport" aria-label="Select airport">
@@ -65,9 +106,9 @@ button,input,select{font-family:"IBM Plex Sans",Arial,sans-serif}
       <option value="KORD">KORD — Chicago O'Hare</option>
     </select></div>
     <div class="airport-field"><label for="runwayPick">RUNWAY / NOMINAL HEADING</label><select id="runwayPick" aria-label="Select runway"></select></div>
-    <div class="metar-panel"><div class="metar-title"><span>RAW METAR / <span id="metarIcao">CYYZ</span></span><button id="refreshMetar" type="button" aria-label="Refresh raw METAR">↻ REFRESH</button></div><code id="metarRaw" aria-live="polite">LOADING...</code><div id="metarState">Source: AviationWeather.gov · periodic snapshot</div></div>
+    <div class="metar-panel"><div class="metar-title"><span>RAW METAR / <span id="metarIcao">CYYZ</span></span><button id="refreshMetar" type="button" aria-label="Refresh raw METAR">↻ REFRESH</button></div><code id="metarRaw" aria-live="polite">LOADING...</code><div id="metarState">Source: AviationWeather.gov · periodic snapshot</div><div class="metar-actions"><button id="useMetar" type="button">↗ USE METAR WINDS</button><span id="windSource">WIND: MANUAL</span></div></div>
   </div>
-  <div class="controls">
+  <div id="calculatorContent"><div class="controls">
    <div class="control"><div class="control-head"><label for="runway">Runway heading</label><output id="runwayOut">360°</output></div><input id="runway" type="range" min="0" max="360" step="1" value="360"></div>
    <div class="control"><div class="control-head"><label for="wind">Wind from</label><output id="windOut">040°</output></div><input id="wind" type="range" min="0" max="360" step="1" value="40"></div>
    <div class="control"><div class="control-head"><label for="speed">Wind speed</label><output id="speedOut">12 kt</output></div><input id="speed" type="range" min="0" max="60" step="1" value="12"></div>
@@ -87,6 +128,9 @@ button,input,select{font-family:"IBM Plex Sans",Arial,sans-serif}
     <div class="limit-panel"><div class="limit-row"><label for="limit">Reference crosswind threshold (kt)</label><input id="limit" type="number" min="1" max="100" value="15" aria-label="Editable reference crosswind threshold"></div><div class="track"><div id="marker" class="marker"></div></div><div id="status" class="status good" aria-live="polite">WITHIN REFERENCE THRESHOLD</div><div class="gauge-row"><div class="gauge"><svg viewBox="0 0 130 130" aria-label="Semicircular crosswind gauge"><path d="M15 65A50 50 0 0 1 115 65" fill="none" stroke="#29473f" stroke-width="12"/><path d="M85 25A50 50 0 0 1 110 44" fill="none" stroke="#9b742d" stroke-width="12"/><path d="M110 44A50 50 0 0 1 115 65" fill="none" stroke="#a34850" stroke-width="12"/><g id="needle" class="gauge-needle"><line x1="65" y1="65" x2="65" y2="20" stroke="#eaf3ff" stroke-width="3"/><circle cx="65" cy="65" r="5" fill="#eaf3ff"/></g></svg></div><div class="gauge-caption">STEADY CROSSWIND<br><strong id="percent">51%</strong> OF THRESHOLD<br><span id="gustStatus">GUST: 77%</span></div></div></div>
    </div>
   </div>
+  </div>
+  <section id="visualizerContent" class="tab-content" hidden><div class="visualizer-intro"><strong>RUNWAY VISUALIZER</strong><span>Top-down wind vector / live controls</span></div><div id="visualizerMount"></div><div class="instrument-note">Vector illustration is schematic. Headings and wind direction must share the same true/magnetic reference.</div></section>
+  <section id="weatherContent" class="tab-content" hidden><div class="weather-heading"><strong>METAR & WEATHER</strong><span>Unmodified coded observations · AviationWeather.gov</span></div><div class="weather-cards"><article><label>STATION</label><strong id="wxStation">CYYZ</strong></article><article><label>WIND FROM (TRUE)</label><strong id="wxDir">—</strong></article><article><label>SUSTAINED WIND</label><strong id="wxSpeed">—</strong></article><article><label>GUSTS</label><strong id="wxGust">—</strong></article></div><div class="weather-raw"><label>RAW METAR</label><code id="weatherMetar">Awaiting report...</code></div><p id="wxNotice" class="instrument-note">METAR wind directions are true. Runway designators are based on magnetic heading; verify references before using these values for operational decisions.</p></section>
   <div class="bottom"><span><span class="small-icon">◉</span> Wind components: crosswind = V × sin(θ) · headwind = V × cos(θ)</span><span>θ = WIND FROM − RUNWAY HEADING</span></div>
  </main>
  <p id="error" class="error" role="alert"></p><p class="disclaimer">Training visualization only — not for flight planning or go/no-go decisions. The 15 kt default is a user-adjustable reference, not a certified C172 operating limit. Consult the specific aircraft POH, conditions, and instructor. Use wind direction and runway heading in the same true/magnetic reference.</p>
@@ -149,7 +193,7 @@ const AIRPORTS={
  KLAX:["06L","06R","07L","07R","24L","24R","25L","25R"],
  KORD:["04L","04R","09L","09C","09R","10L","10C","10R","22L","22R","27L","27C","27R","28L","28C","28R"]
 };
-let metarRequest=0;
+let metarRequest=0;let latestMetar=null;let windMode='manual';
 function selectAirport(){
  const id=$('airport').value,options=AIRPORTS[id];
  $('runwayPick').replaceChildren(...options.map(name=>{const el=document.createElement('option');el.value=name;el.textContent='RWY '+name+' / '+String(Number(name.slice(0,2))*10%360).padStart(3,'0')+'°';return el}));
@@ -161,7 +205,7 @@ function selectRunway(){
 }
 async function fetchMetar(){
  const id=$('airport').value,token=++metarRequest;
- $('metarIcao').textContent=id;
+ $('metarIcao').textContent=id;latestMetar=null;renderWeather(null);
  $('metarRaw').textContent='LOADING METAR...';
  $('metarState').textContent='Loading published observation snapshot';
  try{
@@ -171,13 +215,13 @@ async function fetchMetar(){
   const raw=data?.reports?.[id];
   if(typeof raw!=='string'||!raw.trim())throw new Error('No report for this airport');
   const age=data.updatedAt?(Date.now()-Date.parse(data.updatedAt))/60000:Infinity;
-  $('metarRaw').textContent=raw;
+  $('metarRaw').textContent=raw;latestMetar=raw;renderWeather(raw);applyMetarWind(raw);
   $('metarState').textContent=Number.isFinite(age)&&age>=0&&age<120
    ?'Raw METAR · snapshot '+Math.round(age)+' min old'
    :'Raw METAR · snapshot may be stale — verify independently';
  }catch(error){
   if(token!==metarRequest)return;
-  $('metarRaw').textContent='METAR NOT YET AVAILABLE';
+  latestMetar=null;renderWeather(null);$('metarRaw').textContent='METAR NOT YET AVAILABLE';
   $('metarState').textContent='Scheduled feed pending · use refresh after update';
  }
 }
@@ -185,6 +229,59 @@ $('airport').addEventListener('change',selectAirport);
 $('runwayPick').addEventListener('change',selectRunway);
 $('refreshMetar').addEventListener('click',fetchMetar);
 $('runway').addEventListener('input',()=>{$('runwayPick').value='';});
+
+function parseMetarWind(raw){
+ if(typeof raw!=='string')return null;
+ // Only the initial METAR wind group; never confuse wind groups in remarks.
+ const core=raw.split(/\\sRMK\\s/)[0];
+ const match=core.match(/(?:^|\\s)(\\d{3}|VRB)(\\d{2,3})(?:G(\\d{2,3}))?KT(?=\\s|$)/);
+ if(!match)return null;
+ const speed=Number(match[2]),gust=match[3]?Number(match[3]):speed;
+ return {direction:match[1]==='VRB'?null:Number(match[1]),speed,gust,variable:match[1]==='VRB'};
+}
+function applyMetarWind(raw){
+ const parsed=parseMetarWind(raw);
+ $('useMetar').disabled=!parsed;
+ if(!parsed){$('windSource').textContent='WIND: MANUAL / NO USABLE METAR WIND';return}
+ if(parsed.variable){$('windSource').textContent='VARIABLE WIND · DIRECTION MANUAL';}
+ if(windMode==='manual'&&!window.metarAutoInitialized){windMode='metar';window.metarAutoInitialized=true}
+ if(windMode==='metar'){
+  if(parsed.direction!==null)$('wind').value=parsed.direction;
+  $('speed').max=Math.max(60,parsed.speed);
+  $('gust').max=Math.max(80,parsed.gust);
+  $('speed').value=parsed.speed;$('gust').value=parsed.gust;
+  $('windSource').textContent=parsed.variable?'METAR SPEED / VARIABLE DIRECTION':'WIND: METAR (TRUE) · EDITABLE';
+  update();
+ }
+}
+function renderWeather(raw){
+ $('wxStation').textContent=$('airport').value;
+ $('weatherMetar').textContent=raw||'No current observation loaded';
+ const p=parseMetarWind(raw);
+ $('wxDir').textContent=p?(p.variable?'VRB':pad(p.direction)+'° T'):'—';
+ $('wxSpeed').textContent=p?p.speed+' kt':'—';
+ $('wxGust').textContent=p?p.gust+' kt':'—';
+}
+$('useMetar').addEventListener('click',()=>{
+ if(latestMetar){windMode='metar';applyMetarWind(latestMetar)}
+});
+['wind','speed','gust'].forEach(id=>$(id).addEventListener('input',()=>{
+ if(windMode==='metar'){$('windSource').textContent='WIND: MANUALLY ADJUSTED';windMode='manual'}
+}));
+const vectorPanel=document.querySelector('.vector-panel');
+const vectorHome=vectorPanel.parentNode;
+const vectorNext=vectorPanel.nextSibling;
+function changeTab(name){
+ document.querySelectorAll('.flight-tab').forEach(tab=>{
+  const active=tab.dataset.view===name;tab.classList.toggle('active',active);tab.setAttribute('aria-selected',String(active));
+ });
+ $('calculatorContent').hidden=name!=='calculator';
+ $('visualizerContent').hidden=name!=='visualizer';
+ $('weatherContent').hidden=name!=='weather';
+ if(name==='visualizer')$('visualizerMount').appendChild(vectorPanel);
+ else vectorHome.insertBefore(vectorPanel,vectorNext);
+}
+document.querySelectorAll('.flight-tab').forEach(tab=>tab.addEventListener('click',()=>changeTab(tab.dataset.view)));
 selectAirport();
 </script>
 </body></html>
