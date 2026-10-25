@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#141a39">
+<meta name="theme-color" content="#0e1d38">
 <meta name="description" content="An interactive Cessna-inspired runway crosswind trainer with wind vector visualization.">
 <title>RWY / Crosswind Trainer</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -134,30 +134,30 @@ html,body,button,input,select{font-family:"DM Sans",Arial,sans-serif}
 .topbar h1,.start,.readout label,.control-head,.status{font-family:"Space Grotesk","DM Sans",sans-serif!important;letter-spacing:-.015em}
 .cockpit-header,.cockpit-footer,.outside-label,.mfd small,.mfd-line,.top-meta,.panel-head,.control output,.readout .value,.sub,.gauge-caption,.bottom,.limit-row input,.vector-svg text,.airport-field label,.metar-title,.airport-field select,.metar-decoded,.airport-photo figcaption{font-family:"IBM Plex Mono",monospace!important}
 
-/* Girls in Aviation: twilight violet + sky blue, preserving layout and readability */
-:root{--bg:#0d1025;--panel:#171a38;--raised:#20254b;--line:#454c80;--text:#f0efff;--muted:#b3b8df;--cyan:#8ccaff;--amber:#c7a4ff;--green:#8bd8c7;--red:#ff91b1}
-html,body{background:#0d1025;color:var(--text)}
-.analysis{background:linear-gradient(145deg,#11132c 0%,#101c39 65%,#181536 100%)!important}
-.analysis .topbar{background:#141a39!important;border-bottom-color:#454c80!important}
-.console{background:#121832!important;border-color:#414b7c!important}
-.airport-strip,.control,.vector-panel,.readout,.limit-panel,.metar-panel,#visualizerContent,#weatherContent{background:#1a2042!important;border-color:#444d80!important}
-.airport-field select,.limit-row input{background:#111831!important;border-color:#5b619a!important;color:#f0efff!important}
-.airport-photo{background:linear-gradient(140deg,#272352,#172c55)!important;border-color:#565c94!important}
-.airport-photo figcaption{background:linear-gradient(transparent,#12152eea)!important}
-.airport-photo figcaption span:last-child{color:#a9cfff!important}
-.metar-decoded,.weather-card{background:#171e3c!important;border-color:#4b5586!important}
-#visualizerContent{background:#151e3e!important;border-color:#505b91!important}
-.cyan{color:#8ccaff!important}.amber{color:#c7a4ff!important}
-.back,.metar-actions button{background:#282753!important;border-color:#6c70a7!important;color:#edeaff!important}
-.back:hover,.metar-actions button:hover{background:#393575!important}
-.start{background:linear-gradient(110deg,#a68aff,#8ccaff)!important;border-color:#c2b1ff!important;color:#11152c!important}
-.start:hover{filter:brightness(1.1)}
-.cockpit-header .tag,.outside-label{background:#27244bc9!important;border-color:#9993ce77!important;color:#f4efff!important}
-.dash{background:linear-gradient(#272444,#141a36 24%,#171c3c)!important;border-top-color:#413c6c!important}
-.dial{border-color:#504b80!important;background:radial-gradient(circle,#242852,#10152c 70%)!important}
-.mfd{background:#121735!important;border-color:#57548d!important}
-.track{background:linear-gradient(90deg,#5477b7 0 70%,#8c6bb8 70% 90%,#a75e8a 90% 100%)!important}
-button:focus-visible,input:focus-visible,select:focus-visible{outline-color:#c7a4ff!important}
+/* Sky blue + deep indigo/navy palette — no purple accents */
+:root{--bg:#091326;--panel:#101f3b;--raised:#182c4c;--line:#34577a;--text:#edf7ff;--muted:#a5c4dd;--cyan:#79caff;--amber:#a6ddff;--green:#8bd8c7;--red:#ff91a5}
+html,body{background:#091326;color:var(--text)}
+.analysis{background:linear-gradient(145deg,#0b1630 0%,#102847 65%,#101d38 100%)!important}
+.analysis .topbar{background:#0e1d38!important;border-bottom-color:#34577a!important}
+.console{background:#101f3b!important;border-color:#34577a!important}
+.airport-strip,.control,.vector-panel,.readout,.limit-panel,.metar-panel,#visualizerContent,#weatherContent{background:#142743!important;border-color:#365d83!important}
+.airport-field select,.limit-row input{background:#0c1c35!important;border-color:#4e7799!important;color:#edf7ff!important}
+.airport-photo{background:linear-gradient(140deg,#143b60,#0e203e)!important;border-color:#46789d!important}
+.airport-photo figcaption{background:linear-gradient(transparent,#09182eea)!important}
+.airport-photo figcaption span:last-child{color:#91d5ff!important}
+.metar-decoded,.weather-card{background:#112440!important;border-color:#3d6387!important}
+#visualizerContent{background:#10213e!important;border-color:#3d6387!important}
+.cyan{color:#79caff!important}.amber{color:#a6ddff!important}
+.back,.metar-actions button{background:#1a3556!important;border-color:#4c7da4!important;color:#e7f6ff!important}
+.back:hover,.metar-actions button:hover{background:#24517b!important}
+.start{background:linear-gradient(110deg,#71bdf1,#b2e6ff)!important;border-color:#9edcff!important;color:#091b31!important}
+.start:hover{filter:brightness(1.08)}
+.cockpit-header .tag,.outside-label{background:#102846d9!important;border-color:#8ccfff77!important;color:#f1faff!important}
+.dash{background:linear-gradient(#1c3352,#0e1c36 24%,#122540)!important;border-top-color:#315778!important}
+.dial{border-color:#365e80!important;background:radial-gradient(circle,#1a3655,#0b182d 70%)!important}
+.mfd{background:#0d203c!important;border-color:#44759b!important}
+.track{background:linear-gradient(90deg,#367eac 0 70%,#6caed4 70% 90%,#9b6070 90% 100%)!important}
+button:focus-visible,input:focus-visible,select:focus-visible{outline-color:#79caff!important}
 </style>
 </head>
 <body>
