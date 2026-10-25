@@ -79,8 +79,18 @@ html,body{background:#06101b;color:var(--text)}
 .weather-raw{border:1px solid #265371;background:#071622;border-radius:8px;margin-top:16px;padding:20px;display:flex;flex-direction:column;gap:14px}
 .weather-raw code{font:14px/1.8 "IBM Plex Mono",monospace;color:#e8f1f8;overflow-wrap:anywhere}
 .instrument-note{color:#9bb1c4;font:12px/1.8 "IBM Plex Mono",monospace;margin-top:17px}
-@media(min-width:1250px){body:has(#analysis:not([hidden])) #cockpit{display:flex!important;position:fixed;top:0;left:0;width:43%;height:100vh;min-height:0;z-index:0}body:has(#analysis:not([hidden])) #analysis{display:block!important;width:57%;margin:0 0 0 43%;position:relative;z-index:1;min-height:100vh}body:has(#analysis:not([hidden])) #cockpit .dash{min-height:240px}body:has(#analysis:not([hidden])) #cockpit #start{display:none}body:has(#analysis:not([hidden])) #analysis .display{grid-template-columns:1fr}body:has(#analysis:not([hidden])) #analysis .airport-strip{grid-template-columns:1fr 1fr}body:has(#analysis:not([hidden])) #analysis .metar-panel{grid-column:1/-1}body:has(#analysis:not([hidden])) #analysis .controls{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:700px){.flight-tab{font-size:11px;letter-spacing:0}.weather-cards{grid-template-columns:repeat(2,1fr)}.visualizer-intro,.weather-heading{flex-direction:column;align-items:flex-start}}
+
+#translateMetar{background:#10263a;border:1px solid #37627c;color:#a9e7ff;border-radius:5px;padding:8px 12px;font:600 12px "IBM Plex Mono",monospace}
+.metar-decoded{margin-top:12px;padding:12px;background:#071a2a;border:1px solid #2c5772;border-radius:6px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.metar-decoded[hidden]{display:none}
+.metar-decoded p{margin:0;color:#c6dbe8;font:12px/1.6 "IBM Plex Sans",sans-serif}
+.visualizer-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}
+.visualizer-stats article{background:#0b2335;border:1px solid #255371;border-radius:8px;padding:15px;display:flex;flex-direction:column;gap:8px}
+.visualizer-stats label{font:11px "IBM Plex Mono",monospace;color:#9db8cc}
+.visualizer-stats strong{font:600 24px "Barlow Condensed",sans-serif;color:#6ddaff}
+#weatherSummary{color:#d6e9f5;font:14px/1.8 "IBM Plex Sans",sans-serif;margin:0 0 12px}
+@media(max-width:650px){.metar-decoded{grid-template-columns:1fr}.visualizer-stats{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
@@ -106,7 +116,7 @@ html,body{background:#06101b;color:var(--text)}
       <option value="KORD">KORD — Chicago O'Hare</option>
     </select></div>
     <div class="airport-field"><label for="runwayPick">RUNWAY / NOMINAL HEADING</label><select id="runwayPick" aria-label="Select runway"></select></div>
-    <div class="metar-panel"><div class="metar-title"><span>RAW METAR / <span id="metarIcao">CYYZ</span></span><button id="refreshMetar" type="button" aria-label="Refresh raw METAR">↻ REFRESH</button></div><code id="metarRaw" aria-live="polite">LOADING...</code><div id="metarState">Source: AviationWeather.gov · periodic snapshot</div><div class="metar-actions"><button id="useMetar" type="button">↗ USE METAR WINDS</button><span id="windSource">WIND: MANUAL</span></div></div>
+    <div class="metar-panel"><div class="metar-title"><span>RAW METAR / <span id="metarIcao">CYYZ</span></span><button id="refreshMetar" type="button" aria-label="Refresh raw METAR">↻ REFRESH</button></div><code id="metarRaw" aria-live="polite">LOADING...</code><div id="metarState">Source: AviationWeather.gov · periodic snapshot</div><div class="metar-actions"><button id="useMetar" type="button">↗ USE METAR WINDS</button><button id="translateMetar" type="button" aria-expanded="false" aria-controls="metarDecoded">☰ TRANSLATE METAR</button><span id="windSource">WIND: MANUAL</span></div><div id="metarDecoded" class="metar-decoded" hidden></div></div>
   </div>
   <div id="calculatorContent"><div class="controls">
    <div class="control"><div class="control-head"><label for="runway">Runway heading</label><output id="runwayOut">360°</output></div><input id="runway" type="range" min="0" max="360" step="1" value="360"></div>
@@ -129,8 +139,8 @@ html,body{background:#06101b;color:var(--text)}
    </div>
   </div>
   </div>
-  <section id="visualizerContent" class="tab-content" hidden><div class="visualizer-intro"><strong>RUNWAY VISUALIZER</strong><span>Top-down wind vector / live controls</span></div><div id="visualizerMount"></div><div class="instrument-note">Vector illustration is schematic. Headings and wind direction must share the same true/magnetic reference.</div></section>
-  <section id="weatherContent" class="tab-content" hidden><div class="weather-heading"><strong>METAR & WEATHER</strong><span>Unmodified coded observations · AviationWeather.gov</span></div><div class="weather-cards"><article><label>STATION</label><strong id="wxStation">CYYZ</strong></article><article><label>WIND FROM (TRUE)</label><strong id="wxDir">—</strong></article><article><label>SUSTAINED WIND</label><strong id="wxSpeed">—</strong></article><article><label>GUSTS</label><strong id="wxGust">—</strong></article></div><div class="weather-raw"><label>RAW METAR</label><code id="weatherMetar">Awaiting report...</code></div><p id="wxNotice" class="instrument-note">METAR wind directions are true. Runway designators are based on magnetic heading; verify references before using these values for operational decisions.</p></section>
+  <section id="visualizerContent" class="tab-content" hidden><div class="visualizer-intro"><strong>RUNWAY VISUALIZER</strong><span>Top-down wind vector / live controls</span></div><div class="visualizer-stats"><article><label>SELECTED RUNWAY</label><strong id="vizRunway">—</strong></article><article><label>RELATIVE WIND ANGLE</label><strong id="vizAngle">—</strong></article><article><label>CROSSWIND SIDE</label><strong id="vizSide">—</strong></article></div><div id="visualizerMount"></div><div class="instrument-note">Vector illustration is schematic. Headings and wind direction must share the same true/magnetic reference.</div></section>
+  <section id="weatherContent" class="tab-content" hidden><div class="weather-heading"><strong>METAR & WEATHER</strong><span>Unmodified coded observations · AviationWeather.gov</span></div><div class="weather-cards"><article><label>STATION</label><strong id="wxStation">CYYZ</strong></article><article><label>WIND FROM (TRUE)</label><strong id="wxDir">—</strong></article><article><label>SUSTAINED WIND</label><strong id="wxSpeed">—</strong></article><article><label>GUSTS</label><strong id="wxGust">—</strong></article></div><div class="weather-raw"><label>OBSERVATION & WEATHER SUMMARY</label><p id="weatherSummary">Awaiting report...</p><label>RAW METAR</label><code id="weatherMetar">Awaiting report...</code></div><p id="wxNotice" class="instrument-note">METAR wind directions are true. Runway designators are based on magnetic heading; verify references before using these values for operational decisions.</p></section>
   <div class="bottom"><span><span class="small-icon">◉</span> Wind components: crosswind = V × sin(θ) · headwind = V × cos(θ)</span><span>θ = WIND FROM − RUNWAY HEADING</span></div>
  </main>
  <p id="error" class="error" role="alert"></p><p class="disclaimer">Training visualization only — not for flight planning or go/no-go decisions. The 15 kt default is a user-adjustable reference, not a certified C172 operating limit. Consult the specific aircraft POH, conditions, and instructor. Use wind direction and runway heading in the same true/magnetic reference.</p>
@@ -153,6 +163,9 @@ function update(){
  const rwynum=n=>{let x=Math.round(n/10)%36;return String(x===0?36:x).padStart(2,'0')};
  $('runwayOut').textContent=pad(r)+'°';$('windOut').textContent=pad(w)+'°';$('speedOut').textContent=v+' kt';$('gustOut').textContent=g+' kt';
  $('vectorHeading').textContent='RWY '+rwynum(r)+' · '+pad(w)+'° / '+v+' KT';
+ $('vizRunway').textContent='RWY '+rwynum(r)+' / '+pad(r)+'°';
+ $('vizAngle').textContent=Math.abs(((w-r+540)%360)-180)+'°';
+ $('vizSide').textContent=c===0?'NONE':c>0?'RIGHT':'LEFT';
  $('rwyTop').textContent=rwynum(r);$('rwyBottom').textContent=rwynum((r+180)%360);
  $('runwayGraphic').style.transform='rotate('+r+'deg)';
  $('crossValue').textContent=fmt(c);$('headValue').textContent=fmt(h);$('headLabel').textContent=htype;
@@ -258,6 +271,8 @@ function applyMetarWind(raw){
 function renderWeather(raw){
  $('wxStation').textContent=$('airport').value;
  $('weatherMetar').textContent=raw||'No current observation loaded';
+ $('weatherSummary').textContent=raw?decodeMetar(raw).join(' · '):'No observation available';
+ renderDecodedMetar();
  const p=parseMetarWind(raw);
  $('wxDir').textContent=p?(p.variable?'VRB':pad(p.direction)+'° T'):'—';
  $('wxSpeed').textContent=p?p.speed+' kt':'—';
@@ -281,7 +296,43 @@ function changeTab(name){
  $('weatherContent').hidden=name!=='weather';
  if(name==='visualizer')$('visualizerMount').appendChild(vectorPanel);
  else vectorHome.insertBefore(vectorPanel,vectorNext);
+ update();
 }
+function decodeMetar(raw){
+ if(!raw)return ['No report available'];
+ const tokens=raw.trim().split(/\s+/);
+ const parts=[];
+ const time=tokens.find(t=>/^\d{6}Z$/.test(t));
+ if(time)parts.push('Observed on day '+time.slice(0,2)+' at '+time.slice(2,4)+':'+time.slice(4,6)+' UTC');
+ const wind=parseMetarWind(raw);
+ if(wind)parts.push('Wind '+(wind.variable?'variable direction':pad(wind.direction)+'° true')+' at '+wind.speed+' kt'+(wind.gust>wind.speed?', gusting '+wind.gust+' kt':''));
+ const visibility=tokens.find(t=>/^\d+(?:\/\d+)?SM$/.test(t));
+ if(visibility)parts.push('Visibility '+visibility.replace('SM',' statute miles'));
+ const cloudNames={FEW:'Few clouds',SCT:'Scattered clouds',BKN:'Broken cloud cover',OVC:'Overcast'};
+ for(const t of tokens){
+  const m=t.match(/^(FEW|SCT|BKN|OVC)(\d{3})(?:CB|TCU)?$/);
+  if(m)parts.push(cloudNames[m[1]]+' at '+Number(m[2])*100+' ft AGL');
+  if(t==='CLR'||t==='SKC')parts.push('Clear skies reported');
+ }
+ const temp=tokens.find(t=>/^(?:M?\d{2})\/(?:M?\d{2})$/.test(t));
+ if(temp){const [a,b]=temp.split('/');const cv=x=>x.startsWith('M')?'-'+x.slice(1):x;parts.push('Temperature '+cv(a)+'°C; dew point '+cv(b)+'°C')}
+ const alt=tokens.find(t=>/^A\d{4}$/.test(t));
+ if(alt)parts.push('Altimeter '+(Number(alt.slice(1))/100).toFixed(2)+' inHg');
+ if(tokens.includes('AUTO'))parts.push('Automated observation');
+ parts.push('Remarks and unrecognized groups remain in the raw METAR');
+ return parts;
+}
+function renderDecodedMetar(){
+ const container=$('metarDecoded');
+ container.replaceChildren(...decodeMetar(latestMetar).map(item=>{const p=document.createElement('p');p.textContent=item;return p}));
+}
+$('translateMetar').addEventListener('click',()=>{
+ const expanded=$('translateMetar').getAttribute('aria-expanded')==='true';
+ $('translateMetar').setAttribute('aria-expanded',String(!expanded));
+ $('metarDecoded').hidden=expanded;
+ $('translateMetar').textContent=expanded?'☰ TRANSLATE METAR':'✕ SHOW RAW ONLY';
+ renderDecodedMetar();
+});
 document.querySelectorAll('.flight-tab').forEach(tab=>tab.addEventListener('click',()=>changeTab(tab.dataset.view)));
 selectAirport();
 </script>
