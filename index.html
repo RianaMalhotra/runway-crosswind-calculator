@@ -292,6 +292,42 @@ $('useMetar').addEventListener('click',()=>{
 ['wind','speed','gust'].forEach(id=>$(id).addEventListener('input',()=>{
  if(windMode==='metar'){$('windSource').textContent='WIND: MANUALLY ADJUSTED';windMode='manual'}
 }));
+
+function decodeMetar(raw){
+ if(!raw)return ['No report available'];
+ const tokens=raw.trim().split(/\s+/);
+ const parts=[];
+ const time=tokens.find(t=>/^\d{6}Z$/.test(t));
+ if(time)parts.push('Observed on day '+time.slice(0,2)+' at '+time.slice(2,4)+':'+time.slice(4,6)+' UTC');
+ const wind=parseMetarWind(raw);
+ if(wind)parts.push('Wind '+(wind.variable?'variable direction':pad(wind.direction)+'° true')+' at '+wind.speed+' kt'+(wind.gust>wind.speed?', gusting '+wind.gust+' kt':''));
+ const visibility=tokens.find(t=>/^\d+(?:\/\d+)?SM$/.test(t));
+ if(visibility)parts.push('Visibility '+visibility.replace('SM',' statute miles'));
+ const cloudNames={FEW:'Few clouds',SCT:'Scattered clouds',BKN:'Broken cloud cover',OVC:'Overcast'};
+ for(const t of tokens){
+  const m=t.match(/^(FEW|SCT|BKN|OVC)(\d{3})(?:CB|TCU)?$/);
+  if(m)parts.push(cloudNames[m[1]]+' at '+Number(m[2])*100+' ft AGL');
+  if(t==='CLR'||t==='SKC')parts.push('Clear skies reported');
+ }
+ const temp=tokens.find(t=>/^(?:M?\d{2})\/(?:M?\d{2})$/.test(t));
+ if(temp){const [a,b]=temp.split('/');const cv=x=>x.startsWith('M')?'-'+x.slice(1):x;parts.push('Temperature '+cv(a)+'°C; dew point '+cv(b)+'°C')}
+ const alt=tokens.find(t=>/^A\d{4}$/.test(t));
+ if(alt)parts.push('Altimeter '+(Number(alt.slice(1))/100).toFixed(2)+' inHg');
+ if(tokens.includes('AUTO'))parts.push('Automated observation');
+ parts.push('Remarks and unrecognized groups remain in the raw METAR');
+ return parts;
+}
+function renderDecodedMetar(){
+ const container=$('metarDecoded');
+ container.replaceChildren(...decodeMetar(latestMetar).map(item=>{const p=document.createElement('p');p.textContent=item;return p}));
+}
+$('translateMetar').addEventListener('click',()=>{
+ const expanded=$('translateMetar').getAttribute('aria-expanded')==='true';
+ $('translateMetar').setAttribute('aria-expanded',String(!expanded));
+ $('metarDecoded').hidden=expanded;
+ $('translateMetar').textContent=expanded?'☰ TRANSLATE METAR':'✕ SHOW RAW ONLY';
+ renderDecodedMetar();
+});
 selectAirport();
 </script>
 </body></html>
