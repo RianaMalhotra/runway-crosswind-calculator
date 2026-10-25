@@ -91,6 +91,17 @@ html,body{background:#06101b;color:var(--text)}
 .visualizer-stats strong{font:600 24px "Barlow Condensed",sans-serif;color:#6ddaff}
 #weatherSummary{color:#d6e9f5;font:14px/1.8 "IBM Plex Sans",sans-serif;margin:0 0 12px}
 @media(max-width:650px){.metar-decoded{grid-template-columns:1fr}.visualizer-stats{grid-template-columns:1fr 1fr}}
+
+/* One unified instrument dashboard: no duplicated weather or visualizer tabs */
+#visualizerContent{min-height:0;margin:16px 0 20px;padding:15px 18px;border:1px solid #24506b;background:#091c2c;border-radius:8px}
+#visualizerContent .visualizer-intro{margin:0 0 12px}
+#visualizerContent .visualizer-stats{margin-bottom:0}
+#visualizerContent .instrument-note{margin:10px 0 0}
+#weatherContent{min-height:0;margin:20px 0 0}
+#weatherContent .weather-heading{margin-bottom:12px}
+#weatherContent .weather-raw{margin-top:12px}
+#weatherContent .weather-cards strong{font-size:24px}
+@media(min-width:1100px){.analysis .display{grid-template-columns:minmax(0,1.5fr) minmax(300px,1fr)}}
 </style>
 </head>
 <body>
@@ -101,7 +112,6 @@ html,body{background:#06101b;color:var(--text)}
 </section>
 <section id="analysis" class="screen analysis" hidden aria-label="Crosswind analysis instrument">
  <header class="topbar"><button id="back" class="back">← COCKPIT</button><h1>RUNWAY <em>CROSSWIND</em> CALCULATOR</h1><span class="top-meta">FLIGHT WEATHER / TRAINING SUITE</span></header>
- <nav class="flight-tabs" aria-label="Instrument views"><button class="flight-tab active" type="button" data-view="calculator">✈ CROSSWIND CALCULATOR</button><button class="flight-tab" type="button" data-view="visualizer">▥ RUNWAY VISUALIZER</button><button class="flight-tab" type="button" data-view="weather">☁ METAR & WEATHER</button></nav>
  <main class="console">
   <div class="airport-strip">
     <div class="airport-field"><label for="airport">AIRPORT / ICAO</label><select id="airport" aria-label="Select airport">
@@ -118,7 +128,7 @@ html,body{background:#06101b;color:var(--text)}
     <div class="airport-field"><label for="runwayPick">RUNWAY / NOMINAL HEADING</label><select id="runwayPick" aria-label="Select runway"></select></div>
     <div class="metar-panel"><div class="metar-title"><span>RAW METAR / <span id="metarIcao">CYYZ</span></span><button id="refreshMetar" type="button" aria-label="Refresh raw METAR">↻ REFRESH</button></div><code id="metarRaw" aria-live="polite">LOADING...</code><div id="metarState">Source: AviationWeather.gov · periodic snapshot</div><div class="metar-actions"><button id="useMetar" type="button">↗ USE METAR WINDS</button><button id="translateMetar" type="button" aria-expanded="false" aria-controls="metarDecoded">☰ TRANSLATE METAR</button><span id="windSource">WIND: MANUAL</span></div><div id="metarDecoded" class="metar-decoded" hidden></div></div>
   </div>
-  <div id="calculatorContent"><div class="controls">
+  <div class="controls">
    <div class="control"><div class="control-head"><label for="runway">Runway heading</label><output id="runwayOut">360°</output></div><input id="runway" type="range" min="0" max="360" step="1" value="360"></div>
    <div class="control"><div class="control-head"><label for="wind">Wind from</label><output id="windOut">040°</output></div><input id="wind" type="range" min="0" max="360" step="1" value="40"></div>
    <div class="control"><div class="control-head"><label for="speed">Wind speed</label><output id="speedOut">12 kt</output></div><input id="speed" type="range" min="0" max="60" step="1" value="12"></div>
@@ -138,9 +148,8 @@ html,body{background:#06101b;color:var(--text)}
     <div class="limit-panel"><div class="limit-row"><label for="limit">Reference crosswind threshold (kt)</label><input id="limit" type="number" min="1" max="100" value="15" aria-label="Editable reference crosswind threshold"></div><div class="track"><div id="marker" class="marker"></div></div><div id="status" class="status good" aria-live="polite">WITHIN REFERENCE THRESHOLD</div><div class="gauge-row"><div class="gauge"><svg viewBox="0 0 130 130" aria-label="Semicircular crosswind gauge"><path d="M15 65A50 50 0 0 1 115 65" fill="none" stroke="#29473f" stroke-width="12"/><path d="M85 25A50 50 0 0 1 110 44" fill="none" stroke="#9b742d" stroke-width="12"/><path d="M110 44A50 50 0 0 1 115 65" fill="none" stroke="#a34850" stroke-width="12"/><g id="needle" class="gauge-needle"><line x1="65" y1="65" x2="65" y2="20" stroke="#eaf3ff" stroke-width="3"/><circle cx="65" cy="65" r="5" fill="#eaf3ff"/></g></svg></div><div class="gauge-caption">STEADY CROSSWIND<br><strong id="percent">51%</strong> OF THRESHOLD<br><span id="gustStatus">GUST: 77%</span></div></div></div>
    </div>
   </div>
-  </div>
-  <section id="visualizerContent" class="tab-content" hidden><div class="visualizer-intro"><strong>RUNWAY VISUALIZER</strong><span>Top-down wind vector / live controls</span></div><div class="visualizer-stats"><article><label>SELECTED RUNWAY</label><strong id="vizRunway">—</strong></article><article><label>RELATIVE WIND ANGLE</label><strong id="vizAngle">—</strong></article><article><label>CROSSWIND SIDE</label><strong id="vizSide">—</strong></article></div><div id="visualizerMount"></div><div class="instrument-note">Vector illustration is schematic. Headings and wind direction must share the same true/magnetic reference.</div></section>
-  <section id="weatherContent" class="tab-content" hidden><div class="weather-heading"><strong>METAR & WEATHER</strong><span>Unmodified coded observations · AviationWeather.gov</span></div><div class="weather-cards"><article><label>STATION</label><strong id="wxStation">CYYZ</strong></article><article><label>WIND FROM (TRUE)</label><strong id="wxDir">—</strong></article><article><label>SUSTAINED WIND</label><strong id="wxSpeed">—</strong></article><article><label>GUSTS</label><strong id="wxGust">—</strong></article></div><div class="weather-raw"><label>OBSERVATION & WEATHER SUMMARY</label><p id="weatherSummary">Awaiting report...</p><label>RAW METAR</label><code id="weatherMetar">Awaiting report...</code></div><p id="wxNotice" class="instrument-note">METAR wind directions are true. Runway designators are based on magnetic heading; verify references before using these values for operational decisions.</p></section>
+  <section id="visualizerContent" class="tab-content"><div class="visualizer-intro"><strong>RUNWAY VISUALIZER</strong><span>Top-down wind vector / live controls</span></div><div class="visualizer-stats"><article><label>SELECTED RUNWAY</label><strong id="vizRunway">—</strong></article><article><label>RELATIVE WIND ANGLE</label><strong id="vizAngle">—</strong></article><article><label>CROSSWIND SIDE</label><strong id="vizSide">—</strong></article></div><div class="instrument-note">Vector illustration is schematic. Headings and wind direction must share the same true/magnetic reference.</div></section>
+  <section id="weatherContent" class="tab-content"><div class="weather-heading"><strong>METAR & WEATHER</strong><span>Unmodified coded observations · AviationWeather.gov</span></div><div class="weather-cards"><article><label>STATION</label><strong id="wxStation">CYYZ</strong></article><article><label>WIND FROM (TRUE)</label><strong id="wxDir">—</strong></article><article><label>SUSTAINED WIND</label><strong id="wxSpeed">—</strong></article><article><label>GUSTS</label><strong id="wxGust">—</strong></article></div><div class="weather-raw"><label>OBSERVATION & WEATHER SUMMARY</label><p id="weatherSummary">Awaiting report...</p></div><p id="wxNotice" class="instrument-note">METAR wind directions are true. Runway designators are based on magnetic heading; verify references before using these values for operational decisions.</p></section>
   <div class="bottom"><span><span class="small-icon">◉</span> Wind components: crosswind = V × sin(θ) · headwind = V × cos(θ)</span><span>θ = WIND FROM − RUNWAY HEADING</span></div>
  </main>
  <p id="error" class="error" role="alert"></p><p class="disclaimer">Training visualization only — not for flight planning or go/no-go decisions. The 15 kt default is a user-adjustable reference, not a certified C172 operating limit. Consult the specific aircraft POH, conditions, and instructor. Use wind direction and runway heading in the same true/magnetic reference.</p>
@@ -270,7 +279,6 @@ function applyMetarWind(raw){
 }
 function renderWeather(raw){
  $('wxStation').textContent=$('airport').value;
- $('weatherMetar').textContent=raw||'No current observation loaded';
  $('weatherSummary').textContent=raw?decodeMetar(raw).join(' · '):'No observation available';
  renderDecodedMetar();
  const p=parseMetarWind(raw);
@@ -284,56 +292,6 @@ $('useMetar').addEventListener('click',()=>{
 ['wind','speed','gust'].forEach(id=>$(id).addEventListener('input',()=>{
  if(windMode==='metar'){$('windSource').textContent='WIND: MANUALLY ADJUSTED';windMode='manual'}
 }));
-const vectorPanel=document.querySelector('.vector-panel');
-const vectorHome=vectorPanel.parentNode;
-const vectorNext=vectorPanel.nextSibling;
-function changeTab(name){
- document.querySelectorAll('.flight-tab').forEach(tab=>{
-  const active=tab.dataset.view===name;tab.classList.toggle('active',active);tab.setAttribute('aria-selected',String(active));
- });
- $('calculatorContent').hidden=name!=='calculator';
- $('visualizerContent').hidden=name!=='visualizer';
- $('weatherContent').hidden=name!=='weather';
- if(name==='visualizer')$('visualizerMount').appendChild(vectorPanel);
- else vectorHome.insertBefore(vectorPanel,vectorNext);
- update();
-}
-function decodeMetar(raw){
- if(!raw)return ['No report available'];
- const tokens=raw.trim().split(/\s+/);
- const parts=[];
- const time=tokens.find(t=>/^\d{6}Z$/.test(t));
- if(time)parts.push('Observed on day '+time.slice(0,2)+' at '+time.slice(2,4)+':'+time.slice(4,6)+' UTC');
- const wind=parseMetarWind(raw);
- if(wind)parts.push('Wind '+(wind.variable?'variable direction':pad(wind.direction)+'° true')+' at '+wind.speed+' kt'+(wind.gust>wind.speed?', gusting '+wind.gust+' kt':''));
- const visibility=tokens.find(t=>/^\d+(?:\/\d+)?SM$/.test(t));
- if(visibility)parts.push('Visibility '+visibility.replace('SM',' statute miles'));
- const cloudNames={FEW:'Few clouds',SCT:'Scattered clouds',BKN:'Broken cloud cover',OVC:'Overcast'};
- for(const t of tokens){
-  const m=t.match(/^(FEW|SCT|BKN|OVC)(\d{3})(?:CB|TCU)?$/);
-  if(m)parts.push(cloudNames[m[1]]+' at '+Number(m[2])*100+' ft AGL');
-  if(t==='CLR'||t==='SKC')parts.push('Clear skies reported');
- }
- const temp=tokens.find(t=>/^(?:M?\d{2})\/(?:M?\d{2})$/.test(t));
- if(temp){const [a,b]=temp.split('/');const cv=x=>x.startsWith('M')?'-'+x.slice(1):x;parts.push('Temperature '+cv(a)+'°C; dew point '+cv(b)+'°C')}
- const alt=tokens.find(t=>/^A\d{4}$/.test(t));
- if(alt)parts.push('Altimeter '+(Number(alt.slice(1))/100).toFixed(2)+' inHg');
- if(tokens.includes('AUTO'))parts.push('Automated observation');
- parts.push('Remarks and unrecognized groups remain in the raw METAR');
- return parts;
-}
-function renderDecodedMetar(){
- const container=$('metarDecoded');
- container.replaceChildren(...decodeMetar(latestMetar).map(item=>{const p=document.createElement('p');p.textContent=item;return p}));
-}
-$('translateMetar').addEventListener('click',()=>{
- const expanded=$('translateMetar').getAttribute('aria-expanded')==='true';
- $('translateMetar').setAttribute('aria-expanded',String(!expanded));
- $('metarDecoded').hidden=expanded;
- $('translateMetar').textContent=expanded?'☰ TRANSLATE METAR':'✕ SHOW RAW ONLY';
- renderDecodedMetar();
-});
-document.querySelectorAll('.flight-tab').forEach(tab=>tab.addEventListener('click',()=>changeTab(tab.dataset.view)));
 selectAirport();
 </script>
 </body></html>
